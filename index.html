@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Tienda</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: white;
+    }
+
+    .product h2 {
+      margin: 0;
+    }
+
+    .cart {
+      border-top: 2px solid #333;
+      margin-top: 20px;
+      padding-top: 20px;
+      background-color: #fff;
+    }
+
+    .cart ul {
+      padding-left: 20px;
+    }
+
+    button {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1ebe5d;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mi Tienda Online</h1>
+
+  <div class="product">
+    <h2>Producto 1</h2>
+    <p>Precio: $10</p>
+    <button onclick="addToCart('Producto 1', 10)">Agregar al carrito</button>
+  </div>
+
+  <div class="product">
+    <h2>Producto 2</h2>
+    <p>Precio: $15</p>
+    <button onclick="addToCart('Producto 2', 15)">Agregar al carrito</button>
+  </div>
+
+  <div class="product">
+    <h2>Producto 3</h2>
+    <p>Precio: $20</p>
+    <button onclick="addToCart('Producto 3', 20)">Agregar al carrito</button>
+  </div>
+
+  <div class="cart">
+    <h2>Carrito de Compras</h2>
+    <ul id="cartItems"></ul>
+    <p><strong>Total: $<span id="total">0</span></strong></p>
+    <button onclick="checkout()">Finalizar compra en WhatsApp</button>
+  </div>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      total += price;
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      cartItems.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price}`;
+        cartItems.appendChild(li);
+      });
+      document.getElementById("total").textContent = total;
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+      }
+
+      let message = "Hola, quiero comprar:\n";
+      cart.forEach(item => {
+        message += `- ${item.name} por $${item.price}\n`;
+      });
+      message += `\nTotal: $${total}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const phoneNumber = "5211234567890"; // Cambia este número a tu WhatsApp
+
+      window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
